@@ -1,0 +1,12 @@
+offboard_node:
+  ros__parameters:
+    target_altitude: -5.0          # metres, NED frame (negative = up)
+    takeoff_counter_threshold: 10  # timer ticks before arm + engage offboard
+
+tracking_node:
+  ros__parameters:
+    tracker_type: CSRT             # CSRT | KCF | MOSSE
+    image_topic: /camera/image_raw
+    gain_lateral: 0.005            # image pixels → lateral velocity (m/s)
+    gain_vertical: 0.003           # image pixels → vertical velocity (m/s)
+    max_velocity: 2.0              # velocity clamp (m/s)

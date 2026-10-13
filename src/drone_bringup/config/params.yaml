@@ -3,6 +3,8 @@ offboard_node:
     target_altitude: -5.0          # metres, NED frame (negative = up)
     takeoff_counter_threshold: 10  # timer ticks before arm + engage offboard
     altitude_threshold: 0.3        # metres, radius to accept hover reached
+    square_side: 10.0              # metres, side length of square mission
+    waypoint_radius: 0.5           # metres, acceptance radius per waypoint
 
 tracking_node:
   ros__parameters:

@@ -161,20 +161,43 @@ The drone will lift off and hover at **5 metres** in Gazebo.
 
 ### `offboard_node`
 
-Arms the drone, engages PX4 offboard mode, and commands it to a fixed hover altitude via position setpoints.
+Arms the drone, engages PX4 offboard mode, and runs a state machine:
+**IDLE → TAKEOFF → HOVER → MISSION → HOVER → LAND**
 
 **Topics published:**
 - `/fmu/in/offboard_control_mode`
 - `/fmu/in/trajectory_setpoint`
 - `/fmu/in/vehicle_command`
+- `~/state` — current state name (`std_msgs/String`)
 
 **Topics subscribed:**
-- `/fmu/out/vehicle_local_position`
-- `/fmu/out/vehicle_status`
+- `/fmu/out/vehicle_local_position_v1`
+- `/fmu/out/vehicle_status_v4`
+- `~/cmd` — accepts `mission`, `hover`, `land` (`std_msgs/String`)
 
 **Parameters** (in `config/params.yaml`):
 - `target_altitude` — hover altitude in metres, NED frame (default `-5.0`, negative = up)
 - `takeoff_counter_threshold` — timer ticks before arm + engage offboard (default `10`)
+- `altitude_threshold` — metres to accept TAKEOFF → HOVER transition (default `0.3`)
+- `square_side` — side length of square mission in metres (default `10.0`)
+- `waypoint_radius` — acceptance radius per waypoint in metres (default `0.5`)
+
+**Runtime commands** (from a 4th terminal):
+```bash
+# Start the square waypoint mission (must be in HOVER state)
+ros2 topic pub --once /offboard_node/cmd std_msgs/msg/String "data: mission"
+
+# Abort mission and return to hover
+ros2 topic pub --once /offboard_node/cmd std_msgs/msg/String "data: hover"
+
+# Land from any flying state
+ros2 topic pub --once /offboard_node/cmd std_msgs/msg/String "data: land"
+```
+
+Monitor the current state:
+```bash
+ros2 topic echo /offboard_node/state
+```
 
 ---
 

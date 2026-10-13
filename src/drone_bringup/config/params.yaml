@@ -2,6 +2,7 @@ offboard_node:
   ros__parameters:
     target_altitude: -5.0          # metres, NED frame (negative = up)
     takeoff_counter_threshold: 10  # timer ticks before arm + engage offboard
+    altitude_threshold: 0.3        # metres, radius to accept hover reached
 
 tracking_node:
   ros__parameters:

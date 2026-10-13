@@ -57,7 +57,13 @@ class TrackingNode(Node):
             depth=1,
         )
 
-        self.create_subscription(Image, image_topic, self._image_cb, 10)
+        img_qos = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            durability=DurabilityPolicy.VOLATILE,
+            history=HistoryPolicy.KEEP_LAST,
+            depth=1,
+        )
+        self.create_subscription(Image, image_topic, self._image_cb, img_qos)
         self.create_subscription(Bool, '~/enable', self._enable_cb, 10)
 
         self._offboard_pub = self.create_publisher(

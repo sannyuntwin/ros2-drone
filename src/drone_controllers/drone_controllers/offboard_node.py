@@ -47,8 +47,8 @@ class OffboardNode(Node):
         self._command_pub   = self.create_publisher(VehicleCommand,       '/fmu/in/vehicle_command',       qos)
         self._state_pub     = self.create_publisher(String, '~/state', 10)
 
-        self.create_subscription(VehicleLocalPosition, '/fmu/out/vehicle_local_position', self._local_pos_cb, qos)
-        self.create_subscription(VehicleStatus,        '/fmu/out/vehicle_status',         self._status_cb,    qos)
+        self.create_subscription(VehicleLocalPosition, '/fmu/out/vehicle_local_position_v1', self._local_pos_cb, qos)
+        self.create_subscription(VehicleStatus,        '/fmu/out/vehicle_status_v4',         self._status_cb,    qos)
         self.create_subscription(String, '~/cmd', self._cmd_cb, 10)
 
         self._local_pos      = VehicleLocalPosition()

@@ -21,6 +21,12 @@ def generate_launch_description():
             default_value='false',
             description='Start with tracking enabled'),
 
+        # Gazebo camera topic name — verify with: gz topic -l | grep camera
+        DeclareLaunchArgument(
+            'gz_camera_topic',
+            default_value='/camera',
+            description='Gazebo image topic to bridge into ROS 2'),
+
         Node(
             package='drone_controllers',
             executable='offboard_node',
@@ -35,5 +41,15 @@ def generate_launch_description():
             name='tracking_node',
             output='screen',
             parameters=[LaunchConfiguration('params_file')],
+        ),
+
+        # Bridge Gazebo camera → ROS 2 /camera/image_raw
+        Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            name='camera_bridge',
+            arguments=['/camera@sensor_msgs/msg/Image[gz.msgs.Image'],
+            remappings=[('/camera', '/camera/image_raw')],
+            output='screen',
         ),
     ])

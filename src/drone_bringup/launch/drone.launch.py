@@ -45,10 +45,10 @@ def generate_launch_description():
 
         # Bridge Gazebo camera → ROS 2 /camera/image_raw
         Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
+            package='ros_gz_image',
+            executable='image_bridge',
             name='camera_bridge',
-            arguments=['/camera@sensor_msgs/msg/Image[gz.msgs.Image'],
+            arguments=['/camera'],
             remappings=[('/camera', '/camera/image_raw')],
             output='screen',
         ),
